@@ -16,17 +16,16 @@ import javax.servlet.http.HttpSession;
 import jsfproject.entities.Order;
 import jsfproject.entities.User;
 
-
 @Stateless
 public class OrderDAO {
 	private final static String UNIT_NAME = "jsfproject-simplePU";
-	
+
 	@PersistenceContext(unitName = UNIT_NAME)
 	protected EntityManager em;
-	
+
 	@Inject
 	FacesContext context;
-	
+
 	public void create(Order order) {
 		em.persist(order);
 	}
@@ -42,7 +41,7 @@ public class OrderDAO {
 	public Order find(Object id) {
 		return em.find(Order.class, id);
 	}
-	
+
 //	public User checkUser(String username, String password) {
 //		List<User> users = em.createQuery("select u from User u where u.username = :username and u.password = :password")
 //				.setParameter("username", username)
@@ -52,27 +51,19 @@ public class OrderDAO {
 //		return null;
 //	}
 //	
-//	public List<User> listAll() {
-//        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
-//    }
-	
-	
+
 	public void createOrder() {
-		long millis=System.currentTimeMillis();  
-		Date date=new Date(millis);  
-		
+		long millis = System.currentTimeMillis();
+		Date date = new Date(millis);
+
 		HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
 		int userID = (int) session.getAttribute("userID");
-		
-		em.createNativeQuery("INSERT INTO Orders VALUES (?, ?, 0, 1)")
-		.setParameter(1, date)
-		.setParameter(2, userID);
-		
+
+		em.createNativeQuery("INSERT INTO Order VALUES (?, ?, 0, 1)").setParameter(1, date).setParameter(2, userID);
 	}
-	
-	
-	
-	
-	
+
+	public List<Order> listAllOrders() {
+		return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
+	}
 
 }

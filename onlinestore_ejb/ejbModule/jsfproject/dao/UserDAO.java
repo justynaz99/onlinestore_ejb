@@ -43,7 +43,7 @@ public class UserDAO {
 		return null;
 	}
 	
-	public List<User> listAll() {
+	public List<User> listAllUsers() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 	

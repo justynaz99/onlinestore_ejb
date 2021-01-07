@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 
 import jsfproject.entities.Product;
+import jsfproject.entities.User;
 
 @Stateless
 public class ProductDAO {
@@ -33,19 +34,9 @@ public class ProductDAO {
 		return em.find(Product.class, id);
 	}
 	
-	public List<Product> getFullList() {
-		List<Product> list = null;
-
-		Query query = em.createQuery("select p from Product p");
-
-		try {
-			list = query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return list;
-	}
+	public List<Product> listAllProducts() {
+        return em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+    }
 	
 	
 
