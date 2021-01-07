@@ -46,7 +46,7 @@ public class User implements Serializable {
 	private String whoAdded;
 
 	@Column(name="who_modificated")
-	private int whoModificated;
+	private Integer whoModificated;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="user")
@@ -55,7 +55,7 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public int getIdUser() {
+	public Integer getIdUser() {
 		return this.idUser;
 	}
 
@@ -135,11 +135,11 @@ public class User implements Serializable {
 		this.whoAdded = whoAdded;
 	}
 
-	public int getWhoModificated() {
+	public Integer getWhoModificated() {
 		return this.whoModificated;
 	}
 
-	public void setWhoModificated(int whoModificated) {
+	public void setWhoModificated(Integer whoModificated) {
 		this.whoModificated = whoModificated;
 	}
 
