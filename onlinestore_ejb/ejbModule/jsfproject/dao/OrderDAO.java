@@ -1,6 +1,8 @@
 package jsfproject.dao;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -14,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.servlet.http.HttpSession;
 
 import jsfproject.entities.Order;
+import jsfproject.entities.OrderStatus;
 import jsfproject.entities.User;
 
 @Stateless
@@ -38,32 +41,14 @@ public class OrderDAO {
 		em.remove(em.merge(order));
 	}
 
-	public Order find(Object id) {
-		return em.find(Order.class, id);
-	}
-
-//	public User checkUser(String username, String password) {
-//		List<User> users = em.createQuery("select u from User u where u.username = :username and u.password = :password")
-//				.setParameter("username", username)
-//				.setParameter("password", password)
-//				.getResultList();
-//		if (users.size()>0) return users.get(0);
-//		return null;
-//	}
-//	
-
-	public void createOrder() {
-		long millis = System.currentTimeMillis();
-		Date date = new Date(millis);
-
-		HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
-		int userID = (int) session.getAttribute("userID");
-
-		em.createNativeQuery("INSERT INTO Order VALUES (?, ?, 0, 1)").setParameter(1, date).setParameter(2, userID);
+	public OrderStatus find(Object id) {
+		return em.find(OrderStatus.class, id);
 	}
 
 	public List<Order> listAllOrders() {
 		return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
 	}
+	
+	
 
 }

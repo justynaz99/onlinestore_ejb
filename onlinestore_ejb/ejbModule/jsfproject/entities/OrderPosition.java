@@ -23,7 +23,7 @@ public class OrderPosition implements Serializable {
 	@Column(name="price_product")
 	private BigDecimal priceProduct;
 
-	private int quantity;
+	private Integer quantity;
 
 	//bi-directional many-to-one association to Order
 	@ManyToOne
@@ -54,11 +54,11 @@ public class OrderPosition implements Serializable {
 		this.priceProduct = priceProduct;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return this.quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 

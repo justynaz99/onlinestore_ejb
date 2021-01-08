@@ -42,11 +42,11 @@ public class Product implements Serializable {
 		this.idProduct = idProduct;
 	}
 
-	public int getAvailableQuantity() {
+	public Integer getAvailableQuantity() {
 		return this.availableQuantity;
 	}
 
-	public void setAvailableQuantity(int availableQuantity) {
+	public void setAvailableQuantity(Integer availableQuantity) {
 		this.availableQuantity = availableQuantity;
 	}
 

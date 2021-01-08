@@ -18,7 +18,21 @@ public class OrderPositionDAO {
 	@PersistenceContext(unitName = UNIT_NAME)
 	protected EntityManager em;
 	
-	
+
+	public void create(OrderPosition orderPosition) {
+		em.persist(orderPosition);
+	}
+
+	public OrderPosition merge(OrderPosition orderPosition) {
+		return em.merge(orderPosition);
+	}
+
+	public void remove(OrderPosition orderPosition) {
+		em.remove(em.merge(orderPosition));
+	}
+	public OrderPosition find(OrderPosition id) {
+		return em.find(OrderPosition.class, id);
+	}
 	
 	public List<OrderPosition> getPositionsFromThisOrder(Order order) {
 		List<OrderPosition> list = em.createQuery("select p from OrderPosition o where o.order = :order")
