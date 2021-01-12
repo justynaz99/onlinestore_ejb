@@ -33,6 +33,11 @@ public class UserDAO {
 	public User find(Object id) {
 		return em.find(User.class, id);
 	}
+	public List<User> findByFirstName(Object name) {
+		return (List<User>) em.find(User.class, name);
+	}
+	
+
 	
 	public User checkUser(String username, String password) {
 		List<User> users = em.createQuery("select u from User u where u.username = :username and u.password = :password")

@@ -1,6 +1,7 @@
 package jsfproject.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,24 +19,33 @@ public class ProductDAO {
 	@PersistenceContext(unitName = UNIT_NAME)
 	protected EntityManager em;
 
-	private Integer quantity = 2;
-	private Integer page;
-	private Integer lastPage;
+	private int quantity = 2;
+	private int offset = 0;
+	private int page = 1;
+	private int lastPage;
 
-	public Integer getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public Integer getPage() {
+	public int getPage() {
 		return page;
 	}
-	
+
 	public void setPage(int page) {
 		this.page = page;
 	}
 
-	public Integer getLastPage() {
+	public int getLastPage() {
 		return lastPage;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 	public void create(Product product) {
@@ -60,13 +70,42 @@ public class ProductDAO {
 	}
 
 	public List<Product> listAllProducts() {
-		lastPage = (int) Math.floor(countProducts() / quantity);
+		lastPage = (int) Math.round(countProducts() / quantity) + 1;
 
-		if (page == null || page > lastPage || page < 1)
+		if (page <= 0)
 			page = 1;
 
 		return (List<Product>) em.createQuery("SELECT p FROM Product p", Product.class).setMaxResults(getQuantity())
-				.setFirstResult(getQuantity()).getResultList();
+				.setFirstResult(getOffset()).getResultList();
 	}
+
+//	public List<Product> getList(Map<String, Object> searchParams) {
+//		List<Product> list = null;
+//		String where = "";
+//		String name = (String) searchParams.get("name");
+//		
+//		if (name != null) {
+//			if (where.isEmpty()) {
+//				where = "where ";
+//			} else {
+//				where += "and ";
+//			}
+//			where += "p.name like :name ";
+//		}
+//		
+//		Query query = em.createQuery("SELECT p FROM Product p" + where);
+//
+//		if (name != null) {
+//			query.setParameter("name", name + "%");
+//		}
+//
+//		try {
+//			list = query.getResultList();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		return list;
+//	}
 
 }
