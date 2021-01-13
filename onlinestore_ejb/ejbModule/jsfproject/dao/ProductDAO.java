@@ -15,14 +15,13 @@ import jsfproject.entities.User;
 @Stateless
 public class ProductDAO {
 	private final static String UNIT_NAME = "jsfproject-simplePU";
-
-	@PersistenceContext(unitName = UNIT_NAME)
-	protected EntityManager em;
-
 	private int quantity = 2;
 	private int offset = 0;
 	private int page = 1;
 	private int lastPage;
+
+	@PersistenceContext(unitName = UNIT_NAME)
+	protected EntityManager em;
 
 	public int getQuantity() {
 		return quantity;
@@ -79,33 +78,33 @@ public class ProductDAO {
 				.setFirstResult(getOffset()).getResultList();
 	}
 
-//	public List<Product> getList(Map<String, Object> searchParams) {
-//		List<Product> list = null;
-//		String where = "";
-//		String name = (String) searchParams.get("name");
-//		
-//		if (name != null) {
-//			if (where.isEmpty()) {
-//				where = "where ";
-//			} else {
-//				where += "and ";
-//			}
-//			where += "p.name like :name ";
-//		}
-//		
-//		Query query = em.createQuery("SELECT p FROM Product p" + where);
-//
-//		if (name != null) {
-//			query.setParameter("name", name + "%");
-//		}
-//
-//		try {
-//			list = query.getResultList();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		return list;
-//	}
+	public List<Product> getList(Map<String, Object> searchParams) {
+		List<Product> list = null;
+		String where = "";
+		String name = (String) searchParams.get("name");
+		
+		if (name != null) {
+			if (where.isEmpty()) {
+				where = "where ";
+			} else {
+				where += "and ";
+			}
+			where += "p.name like :name ";
+		}
+		
+		Query query = em.createQuery("SELECT p FROM Product p " + where);
+
+		if (name != null) {
+			query.setParameter("name", name + "%");
+		}
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 
 }

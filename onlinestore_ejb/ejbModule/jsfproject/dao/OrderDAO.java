@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -28,6 +29,9 @@ public class OrderDAO {
 
 	@Inject
 	FacesContext context;
+	
+	@EJB
+	OrderStatusDAO orderStatusDAO;
 
 	public void create(Order order) {
 		em.persist(order);
@@ -41,14 +45,25 @@ public class OrderDAO {
 		em.remove(em.merge(order));
 	}
 
-	public OrderStatus find(Object id) {
-		return em.find(OrderStatus.class, id);
+	public Order find(Object id) {
+		return em.find(Order.class, id);
 	}
 
 	public List<Order> listAllOrders() {
 		return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
 	}
 	
+	public boolean cartExists(Object user) {
+		OrderStatus orderStatus = new OrderStatus();
+		//OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
+		orderStatus = orderStatusDAO.getCart();
+		List<Order> orders = em.createQuery("select o from Order o where o.user = :user and o.orderStatus = :orderStatus")
+				.setParameter("user", user)
+				.setParameter("orderStatus", orderStatus)
+				.getResultList();
+		if (orders.size()>0) return true;
+		return false;
+	}
 	
 
 }
