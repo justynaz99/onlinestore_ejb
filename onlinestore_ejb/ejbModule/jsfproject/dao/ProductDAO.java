@@ -56,7 +56,7 @@ public class ProductDAO {
 	}
 
 	public void remove(Product product) {
-		em.remove(em.merge(product));
+		em.remove(product);
 	}
 
 	public Product find(Object id) {
@@ -68,20 +68,23 @@ public class ProductDAO {
 		return list.size();
 	}
 
-	public List<Product> listAllProducts() {
-		lastPage = (int) Math.round(countProducts() / quantity) + 1;
-
-		if (page <= 0)
-			page = 1;
-
-		return (List<Product>) em.createQuery("SELECT p FROM Product p", Product.class).setMaxResults(getQuantity())
-				.setFirstResult(getOffset()).getResultList();
-	}
+//	public List<Product> listAllProducts() {
+//		lastPage = (int) Math.round(countProducts() / quantity) + 1;
+//
+//		if (page <= 0)
+//			page = 1;
+//
+//		return (List<Product>) em.createQuery("SELECT p FROM Product p", Product.class).setMaxResults(getQuantity())
+//				.setFirstResult(getOffset()).getResultList();
+//	}
 
 	public List<Product> getList(Map<String, Object> searchParams) {
+		lastPage = (int) Math.round(countProducts() / quantity) + 1;
 		List<Product> list = null;
 		String where = "";
 		String name = (String) searchParams.get("name");
+		if (page <= 0)
+			page = 1;
 		
 		if (name != null) {
 			if (where.isEmpty()) {
@@ -92,7 +95,8 @@ public class ProductDAO {
 			where += "p.name like :name ";
 		}
 		
-		Query query = em.createQuery("SELECT p FROM Product p " + where);
+		Query query = em.createQuery("SELECT p FROM Product p " + where).setMaxResults(getQuantity())
+				.setFirstResult(getOffset());
 
 		if (name != null) {
 			query.setParameter("name", name + "%");

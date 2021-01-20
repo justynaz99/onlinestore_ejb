@@ -23,9 +23,11 @@ import jsfproject.entities.User;
 @Stateless
 public class OrderDAO {
 	private final static String UNIT_NAME = "jsfproject-simplePU";
+	
 
 	@PersistenceContext(unitName = UNIT_NAME)
 	protected EntityManager em;
+
 
 	@Inject
 	FacesContext context;
@@ -55,8 +57,7 @@ public class OrderDAO {
 	
 	public boolean cartExists(Object user) {
 		OrderStatus orderStatus = new OrderStatus();
-		//OrderStatusDAO orderStatusDAO = new OrderStatusDAO();
-		orderStatus = orderStatusDAO.getCart();
+		orderStatus = orderStatusDAO.getCartStatus();	
 		List<Order> orders = em.createQuery("select o from Order o where o.user = :user and o.orderStatus = :orderStatus")
 				.setParameter("user", user)
 				.setParameter("orderStatus", orderStatus)
@@ -64,6 +65,17 @@ public class OrderDAO {
 		if (orders.size()>0) return true;
 		return false;
 	}
+	
+	public Order getCart(Object user) {
+		OrderStatus orderStatus = new OrderStatus();
+		orderStatus = orderStatusDAO.getCartStatus();
+		Order cart = (Order) em.createQuery("select o from Order o where o.user = :user and o.orderStatus = :orderStatus")
+				.setParameter("user", user)
+				.setParameter("orderStatus", orderStatus)
+				.getSingleResult();
+		return cart;
+	}
+	
 	
 
 }

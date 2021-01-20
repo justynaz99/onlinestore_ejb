@@ -34,16 +34,17 @@ public class OrderPositionDAO {
 		return em.find(OrderPosition.class, id);
 	}
 	
-	public List<OrderPosition> getPositionsFromThisOrder(Order order) {
-		List<OrderPosition> list = em.createQuery("select p from OrderPosition o where o.order = :order")
+	public List<OrderPosition> listPositionsFromThisOrder(Order order) { //lists all positions from given order
+		List<OrderPosition> list = em.createQuery("select o from OrderPosition o where o.order = :order")
 				.setParameter("order", order.getIdOrder())
 				.getResultList();
 		return list;
 	}
 	
-	public List<OrderPosition> listAllPositions() {
-        return em.createQuery("SELECT o FROM OrderPosition o", OrderPosition.class).getResultList();
+	public List<OrderPosition> listAllPositions() { //lists all positions from all orders
+        return em.createQuery("SELECT o FROM OrderPosition o").getResultList();
     }
+	
 	
 	
 

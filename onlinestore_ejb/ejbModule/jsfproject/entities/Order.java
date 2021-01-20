@@ -28,6 +28,7 @@ public class Order implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
+
 	private BigDecimal value;
 
 	//bi-directional many-to-one association to OrderPosition
@@ -46,6 +47,8 @@ public class Order implements Serializable {
 
 	public Order() {
 	}
+	
+	
 
 	public int getIdOrder() {
 		return this.idOrder;
