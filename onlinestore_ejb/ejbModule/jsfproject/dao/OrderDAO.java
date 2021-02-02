@@ -28,7 +28,6 @@ public class OrderDAO {
 	@PersistenceContext(unitName = UNIT_NAME)
 	protected EntityManager em;
 
-
 	@Inject
 	FacesContext context;
 	
@@ -52,30 +51,29 @@ public class OrderDAO {
 	}
 
 	public List<Order> listAllOrders() {
-		return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
+		return em.createQuery("SELECT o FROM Order o where o.orderStatus != :orderStatus")
+				.setParameter("orderStatus", orderStatusDAO.find(1))
+				.getResultList();
 	}
 	
 	public boolean cartExists(Object user) {
-		OrderStatus orderStatus = new OrderStatus();
-		orderStatus = orderStatusDAO.getCartStatus();	
 		List<Order> orders = em.createQuery("select o from Order o where o.user = :user and o.orderStatus = :orderStatus")
 				.setParameter("user", user)
-				.setParameter("orderStatus", orderStatus)
+				.setParameter("orderStatus", orderStatusDAO.find(1))
 				.getResultList();
 		if (orders.size()>0) return true;
 		return false;
 	}
 	
 	public Order getCart(Object user) {
-		OrderStatus orderStatus = new OrderStatus();
-		orderStatus = orderStatusDAO.getCartStatus();
 		Order cart = (Order) em.createQuery("select o from Order o where o.user = :user and o.orderStatus = :orderStatus")
 				.setParameter("user", user)
-				.setParameter("orderStatus", orderStatus)
+				.setParameter("orderStatus", orderStatusDAO.find(1))
 				.getSingleResult();
 		return cart;
 	}
+}
 	
 	
 
-}
+

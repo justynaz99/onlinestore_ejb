@@ -47,8 +47,6 @@ public class Order implements Serializable {
 
 	public Order() {
 	}
-	
-	
 
 	public int getIdOrder() {
 		return this.idOrder;
@@ -119,5 +117,7 @@ public class Order implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+
 
 }

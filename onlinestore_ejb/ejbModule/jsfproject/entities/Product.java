@@ -5,30 +5,24 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-
-/**
- * The persistent class for the product database table.
- * 
- */
 @Entity
-@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_product")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_product")
 	private int idProduct;
 
-	@Column(name="available_quantity")
+	@Column(name = "available_quantity")
 	private int availableQuantity;
 
 	private String name;
 
 	private BigDecimal price;
 
-	//bi-directional many-to-one association to OrderPosition
-	@OneToMany(mappedBy="product")
+	@OneToMany(mappedBy = "product")
 	private List<OrderPosition> orderPositions;
 
 	public Product() {

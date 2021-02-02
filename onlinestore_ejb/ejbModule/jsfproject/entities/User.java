@@ -43,7 +43,7 @@ public class User implements Serializable {
 	private String username;
 
 	@Column(name="who_added")
-	private String whoAdded;
+	private Integer whoAdded;
 
 	@Column(name="who_modificated")
 	private Integer whoModificated;
@@ -127,11 +127,11 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public String getWhoAdded() {
+	public Integer getWhoAdded() {
 		return this.whoAdded;
 	}
 
-	public void setWhoAdded(String whoAdded) {
+	public void setWhoAdded(Integer whoAdded) {
 		this.whoAdded = whoAdded;
 	}
 

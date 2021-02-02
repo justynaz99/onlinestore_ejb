@@ -1,5 +1,6 @@
 package jsfproject.dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -36,7 +37,7 @@ public class OrderPositionDAO {
 	
 	public List<OrderPosition> listPositionsFromThisOrder(Order order) { //lists all positions from given order
 		List<OrderPosition> list = em.createQuery("select o from OrderPosition o where o.order = :order")
-				.setParameter("order", order.getIdOrder())
+				.setParameter("order", order)
 				.getResultList();
 		return list;
 	}

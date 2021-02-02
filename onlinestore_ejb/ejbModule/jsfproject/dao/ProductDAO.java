@@ -15,7 +15,7 @@ import jsfproject.entities.User;
 @Stateless
 public class ProductDAO {
 	private final static String UNIT_NAME = "jsfproject-simplePU";
-	private int quantity = 2;
+	private int quantity = 6;
 	private int offset = 0;
 	private int page = 1;
 	private int lastPage;
@@ -25,6 +25,14 @@ public class ProductDAO {
 
 	public int getQuantity() {
 		return quantity;
+	}
+	
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 	public int getPage() {
@@ -39,13 +47,7 @@ public class ProductDAO {
 		return lastPage;
 	}
 
-	public int getOffset() {
-		return offset;
-	}
-
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+	
 
 	public void create(Product product) {
 		em.persist(product);
@@ -68,21 +70,14 @@ public class ProductDAO {
 		return list.size();
 	}
 
-//	public List<Product> listAllProducts() {
-//		lastPage = (int) Math.round(countProducts() / quantity) + 1;
-//
-//		if (page <= 0)
-//			page = 1;
-//
-//		return (List<Product>) em.createQuery("SELECT p FROM Product p", Product.class).setMaxResults(getQuantity())
-//				.setFirstResult(getOffset()).getResultList();
-//	}
 
 	public List<Product> getList(Map<String, Object> searchParams) {
 		lastPage = (int) Math.round(countProducts() / quantity) + 1;
 		List<Product> list = null;
 		String where = "";
+		String orderBy = "";
 		String name = (String) searchParams.get("name");
+		String selectedItem = (String) searchParams.get("selectedItem");
 		if (page <= 0)
 			page = 1;
 		
@@ -95,8 +90,21 @@ public class ProductDAO {
 			where += "p.name like :name ";
 		}
 		
+		if (selectedItem != null) {
+			if(selectedItem == "1") {
+				orderBy = "order by p.name asc ";
+			}
+			else {
+				orderBy = "order by p.name desc ";
+			}
+			
+		} else {
+			orderBy = "order by p.name desc ";
+		}
+		
 		Query query = em.createQuery("SELECT p FROM Product p " + where).setMaxResults(getQuantity())
 				.setFirstResult(getOffset());
+		
 
 		if (name != null) {
 			query.setParameter("name", name + "%");
