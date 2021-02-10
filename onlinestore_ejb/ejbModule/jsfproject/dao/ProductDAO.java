@@ -26,7 +26,7 @@ public class ProductDAO {
 	public int getQuantity() {
 		return quantity;
 	}
-	
+
 	public int getOffset() {
 		return offset;
 	}
@@ -46,8 +46,6 @@ public class ProductDAO {
 	public int getLastPage() {
 		return lastPage;
 	}
-
-	
 
 	public void create(Product product) {
 		em.persist(product);
@@ -70,7 +68,6 @@ public class ProductDAO {
 		return list.size();
 	}
 
-
 	public List<Product> getList(Map<String, Object> searchParams) {
 		lastPage = (int) Math.round(countProducts() / quantity) + 1;
 		List<Product> list = null;
@@ -80,7 +77,7 @@ public class ProductDAO {
 		String selectedItem = (String) searchParams.get("selectedItem");
 		if (page <= 0)
 			page = 1;
-		
+
 		if (name != null) {
 			if (where.isEmpty()) {
 				where = "where ";
@@ -89,22 +86,18 @@ public class ProductDAO {
 			}
 			where += "p.name like :name ";
 		}
-		
-		if (selectedItem != null) {
-			if(selectedItem == "1") {
-				orderBy = "order by p.name asc ";
-			}
-			else {
-				orderBy = "order by p.name desc ";
-			}
-			
-		} else {
-			orderBy = "order by p.name desc ";
+
+		System.out.println(selectedItem);
+		if (selectedItem.equals("1")) {
+			orderBy = " order by p.name asc ";
+		} else if (selectedItem.equals("2")) {
+			orderBy = " order by p.price asc ";
+		} else if (selectedItem.equals("3")) {
+			orderBy = " order by p.price desc ";
 		}
-		
-		Query query = em.createQuery("SELECT p FROM Product p " + where).setMaxResults(getQuantity())
+
+		Query query = em.createQuery("SELECT p FROM Product p " + where + orderBy).setMaxResults(getQuantity())
 				.setFirstResult(getOffset());
-		
 
 		if (name != null) {
 			query.setParameter("name", name + "%");
@@ -115,7 +108,12 @@ public class ProductDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return list;
+	}
 
+	public List<Product> findByName(String name) {
+		List<Product> list = em.createQuery("SELECT p FROM Product p WHERE p.name like :name", Product.class)
+				.setParameter("name", name).getResultList();
 		return list;
 	}
 
