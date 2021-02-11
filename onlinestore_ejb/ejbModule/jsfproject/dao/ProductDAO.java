@@ -15,7 +15,7 @@ import jsfproject.entities.User;
 @Stateless
 public class ProductDAO {
 	private final static String UNIT_NAME = "jsfproject-simplePU";
-	private int quantity = 6;
+	private int quantity = 2;
 	private int offset = 0;
 	private int page = 1;
 	private int lastPage;
