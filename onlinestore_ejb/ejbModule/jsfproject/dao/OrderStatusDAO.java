@@ -40,7 +40,6 @@ public class OrderStatusDAO {
 		return em.find(OrderStatus.class, id);
 	}
 
-	
 	public OrderStatus getStatus(Object id) {
 		return (OrderStatus) em
 				.createQuery("select o from OrderStatus o where o.idStatus = :idStatus")

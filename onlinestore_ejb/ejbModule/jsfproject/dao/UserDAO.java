@@ -112,9 +112,6 @@ public class UserDAO {
 		if(authenticate(enteredPass, databasePass)) 
 			return users.get(0);
 		else return null;
-		
-		
-		
 	}
 
 	public List<User> listAllUsers() {

@@ -28,7 +28,7 @@ public class Product implements Serializable {
 	public Product() {
 	}
 
-	public int getIdProduct() {
+	public Integer getIdProduct() {
 		return this.idProduct;
 	}
 
